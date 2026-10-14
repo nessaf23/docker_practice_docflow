@@ -10,6 +10,7 @@ COPY server.py .
 
 
 ENV COMPRESS_RATIO=10
-USER appuser
+USER 10001:10001
+EXPOSE 18080
 
 CMD ["python", "/app/server.py"]
