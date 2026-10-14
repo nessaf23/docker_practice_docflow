@@ -90,10 +90,10 @@ wget: server returned error: HTTP/1.1 404 NOT FOUND
 
 ### Статистика работы контейнеров
 Проверка стабильности
-
+'''
 fail=0; for i in $(seq 500); do bash test.sh >/dev/null 2>&1 || fail=$((fail+1)); done; echo "ошибок: $fail"
 ошибок: 0
-
+'''
 (for i in $(seq 500); do bash test.sh >/dev/null 2>&1; done) &
 JOB=$!
 while kill -0 $JOB 2>/dev/null; do
