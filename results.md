@@ -90,10 +90,12 @@ wget: server returned error: HTTP/1.1 404 NOT FOUND
 
 ### Статистика работы контейнеров
 Проверка стабильности
-'''
+
+```
 fail=0; for i in $(seq 500); do bash test.sh >/dev/null 2>&1 || fail=$((fail+1)); done; echo "ошибок: $fail"
 ошибок: 0
-'''
+```
+```
 (for i in $(seq 500); do bash test.sh >/dev/null 2>&1; done) &
 JOB=$!
 while kill -0 $JOB 2>/dev/null; do
@@ -102,6 +104,7 @@ done | tee during.txt
 wait $JOB
 echo "=== после завершения ==="
 docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}" | tee after.txt
+```
 
 Во время работы тестового скрипта 
 
