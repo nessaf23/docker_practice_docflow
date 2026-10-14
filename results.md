@@ -89,8 +89,7 @@ wget: server returned error: HTTP/1.1 404 NOT FOUND
 ### Статистика работы контейнеров
 Проверка стабильности
 
-bash
-fail=0; for i in $(seq 500); do bash test.sh >/dev/null 2>&1 || fail=$((fail+1)); done; echo "ошибок: $fail"
+$fail=0; for i in $(seq 500); do bash test.sh >/dev/null 2>&1 || fail=$((fail+1)); done; echo "ошибок: $fail"
 ошибок: 0
 
 
@@ -103,19 +102,20 @@ wait $JOB
 echo "=== после завершения ==="
 docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}" | tee after.txt
 
-Во время работы тестового скрипта (первый снимок):
+Во время работы тестового скрипта 
+
 NAME                                            CPU %     MEM USAGE / LIMIT     NET I/O           BLOCK I/O
 docker_practice_docflow-main-proxy-1            1.74%     8.938MiB / 31.21GiB   7.41MB / 7.36MB   0B / 4.1kB
 docker_practice_docflow-main-image-compress-1   10.99%    30.84MiB / 31.21GiB   5.75MB / 318kB    0B / 2.15MB
 docker_practice_docflow-main-image-serve-1      1.14%     5.129MiB / 31.21GiB   303kB / 1.09MB    0B / 0B
 
-Во время работы тестового скрипта (средний снимок):
+
 NAME                                            CPU %     MEM USAGE / LIMIT     NET I/O           BLOCK I/O
 docker_practice_docflow-main-proxy-1            1.77%     8.242MiB / 31.21GiB   8.12MB / 8.06MB   0B / 4.1kB
 docker_practice_docflow-main-image-compress-1   11.38%    30.16MiB / 31.21GiB   6.3MB / 349kB     0B / 2.35MB
 docker_practice_docflow-main-image-serve-1      1.08%     5.215MiB / 31.21GiB   336kB / 1.23MB    0B / 0B
 
-Во время работы тестового скрипта (последний снимок):
+
 NAME                                            CPU %     MEM USAGE / LIMIT     NET I/O           BLOCK I/O
 docker_practice_docflow-main-proxy-1            1.73%     8.832MiB / 31.21GiB   8.92MB / 8.86MB   0B / 4.1kB
 docker_practice_docflow-main-image-compress-1   11.33%    30.79MiB / 31.21GiB   6.92MB / 383kB    0B / 2.58MB
@@ -130,6 +130,7 @@ docker_practice_docflow-main-image-serve-1      0.00%     5.953MiB / 31.21GiB   
 
 image-compress нагружен сильнее всех,proxy пропускает весь трафик, image-serve потребляет около 1,1% CPU и около 5 Мб памяти. Дисковых чтений нет (BLOCK I/O 0B / 0B), файлы отдаются из кэша страниц ОС.
 После завершения нагрузки CPU падает до ~0%, память возвращается к прежним значениям. 
+
 ### Пространства имён
 $ PID=$(docker inspect -f '{{.State.Pid}}' $(docker compose ps -q image-serve))
 
