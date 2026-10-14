@@ -39,7 +39,7 @@ def compress_image():
                                           suffix=f".{img.format}",
                                           prefix='compressed_',
                                           delete=False)
-    image_file.close()
+    imgfile.close()
     resized_img.save(imgfile.name, format=img.format)
 
     # returns message with tempfile name
