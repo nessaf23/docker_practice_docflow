@@ -14,8 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY server.py .
 
-
-ENV COMPRESS_RATIO=10
 USER 10001:10001
 EXPOSE 18080
 
